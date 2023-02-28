@@ -12,6 +12,10 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script
+      src="https://kit.fontawesome.com/95efd04b89.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
 
   <body>
@@ -39,9 +43,12 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             {{#if currentUser}}
-            <li class="nav-item">
-              <a class="nav-link" href="/restaurants">Restaurants</a>
-            </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/restaurants">Restaurants</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/shelters">Shelters</a>
+              </li>
             {{/if}}
           </ul>
         </div>

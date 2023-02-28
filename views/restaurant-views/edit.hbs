@@ -1,34 +1,8 @@
-{{! <h1> Restaurant Form </h1>
-<br>
-<br>
-
-<form action = "/restaurants/create" method ="post">
-    <label for="restaurauntNameInput">Restaurant Name: <input id="restaurantNameInput" type="text" name="name"></label>
-    <label for="streetAddressInput">streetAddress: 
-        <input id="streetAddressInput" type="text" name="streetAddress">
-    </label>
-    <label for="cityInput">city: 
-        <input id="cityInput" type="text" name="city">
-    </label>
-    <label for="stateInput">state: 
-        <input id="stateInput" type="text" name="state" maxlength="2">
-    </label>
-    <label for="zipInput">zip: 
-        <input id="zipInput" type="number" name="zip">
-    </label>
-
-    <button>Save</button>
-</form>
-</form>
-
-
- }}
-
 <div class="container my-4">
-  <h4 class="text-center mt-5 mb-3">Create restaurant</h4>
+  <h4 class="text-center mt-5 mb-3">Update restaurant</h4>
   <div class="d-flex justify-content-center align-items-center">
     <div class="card p-3" style="width:40rem">
-      <form action="/restaurants/create" method="post">
+      <form action="/restaurants/update/{{restaurant._id}}" method="post">
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
@@ -42,6 +16,7 @@
                   class="form-control"
                   name="title"
                   id="restaurantName"
+                  value="{{restaurant.title}}"
                   required
                 />
               </div>
@@ -60,6 +35,7 @@
                   class="form-control"
                   name="phoneNumber"
                   id="phoneNumber"
+                  value="{{restaurant.phoneNumber}}"
                   required
                 />
               </div>
@@ -78,6 +54,7 @@
                   value="Fancy"
                   name="foodTypes"
                   id="Fancy"
+                  {{isChecked "Fancy" restaurant.foodTypes}}
                 />
                 <label class="form-check-label" for="Fancy">
                   Fancy
@@ -92,6 +69,8 @@
                   value="General"
                   name="foodTypes"
                   id="General"
+                  {{isChecked "General" restaurant.foodTypes}}
+
                 />
                 <label class="form-check-label" for="General">
                   General
@@ -105,6 +84,7 @@
                   type="checkbox"
                   value="Fast"
                   name="foodTypes"
+                  {{isChecked "Fast" restaurant.foodTypes}}
                   id="Fast"
                 />
                 <label class="form-check-label" for="Fast">
@@ -120,6 +100,8 @@
                   value="Take-Out"
                   name="foodTypes"
                   id="Take-Out"
+                  {{isChecked "Take-Out" restaurant.foodTypes}}
+
                 />
                 <label class="form-check-label" for="Take-Out">
                   Take-Out
@@ -142,6 +124,7 @@
                   id="street"
                   name="street"
                   placeholder="123 Main St"
+                    value="{{restaurant.address.street}}"
                   required
                 />
               </div>
@@ -155,6 +138,7 @@
                   id="city"
                   name="city"
                   placeholder="San Francisco"
+                    value="{{restaurant.address.city}}"
                   required
                 />
               </div>
@@ -168,6 +152,7 @@
                   id="state"
                   name="state"
                   placeholder="California"
+                  value="{{restaurant.address.state}}"
                   required
                 />
               </div>
@@ -181,6 +166,7 @@
                   id="zip"
                   name="zip"
                   placeholder="94105"
+                  value="{{restaurant.address.zip}}"
                   required
                 />
               </div>
@@ -202,6 +188,7 @@
                   id="latitude"
                   name="latitude"
                   placeholder="latitude"
+                  value="{{restaurant.location.lat}}"
                   required
                   readonly
                 />
@@ -216,6 +203,7 @@
                   id="longitude"
                   name="longitude"
                   placeholder="longitude"
+                  value="{{restaurant.location.lng}}"
                   required
                   readonly
                 />
@@ -236,48 +224,21 @@
               class="form-control"
               name="website"
               placeholder="https://www.example.com"
+              value="{{restaurant.website}}"
             />
           </div>
         </div>
 
         <div class="d-grid gap-2">
-          <button class="btn btn-block btn-primary">Create Restaurant</button>
+          <button class="btn btn-block btn-primary">Update Restaurant</button>
         </div>
       </form>
     </div>
   </div>
-
-  <div class="row my-5">
-    {{#if restaurants}}
-    <h4>SmartCycle Restaurants</h4>
-    {{/if}}
-    {{#each restaurants}}
-      <div class="col-md-4">
-        <div class="card p-3 mb-3" style="min-height:220px">
-          <p><b>Name: </b>{{this.title}}</p>
-          <p><b>Phone: </b>{{this.phoneNumber}}</p>
-          <p><b>Food Type: </b>
-            {{#each this.foodTypes}}
-              {{this}},
-            {{/each}}
-          </p>
-          <p><b>Address: </b>{{this.address.street}},
-            {{this.address.city}},
-            {{this.address.state}}
-            {{this.address.zip}}</p>
-          <div>
-            <a href="/restaurants/details/{{this._id}}"><button
-                class="btn btn-primary"
-              >View</button></a>
-              <a href="/restaurants/edit/{{this._id}}"><button
-                class="btn btn-primary"
-              >Edit</button></a>
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
+  
 </div>
+
+
 
 <!-- Modal -->
 <div

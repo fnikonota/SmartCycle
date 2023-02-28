@@ -1,47 +1,21 @@
-{{! <h1> Restaurant Form </h1>
-<br>
-<br>
-
-<form action = "/restaurants/create" method ="post">
-    <label for="restaurauntNameInput">Restaurant Name: <input id="restaurantNameInput" type="text" name="name"></label>
-    <label for="streetAddressInput">streetAddress: 
-        <input id="streetAddressInput" type="text" name="streetAddress">
-    </label>
-    <label for="cityInput">city: 
-        <input id="cityInput" type="text" name="city">
-    </label>
-    <label for="stateInput">state: 
-        <input id="stateInput" type="text" name="state" maxlength="2">
-    </label>
-    <label for="zipInput">zip: 
-        <input id="zipInput" type="number" name="zip">
-    </label>
-
-    <button>Save</button>
-</form>
-</form>
-
-
- }}
-
 <div class="container my-4">
-  <h4 class="text-center mt-5 mb-3">Create restaurant</h4>
+  <h4 class="text-center mt-5 mb-3">Create new request</h4>
   <div class="d-flex justify-content-center align-items-center">
     <div class="card p-3" style="width:40rem">
-      <form action="/restaurants/create" method="post">
+      <form action="/shelters/create" method="post">
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="restaurantName" class="form-label">Restaurant name</label>
+              <label for="message" class="form-label">Your Message</label>
               <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
-                  <i class="fa-solid fa-utensils"></i>
+                  <i class="fa-solid fa-bowl-food"></i>
                 </span>
                 <input
                   type="text"
                   class="form-control"
-                  name="title"
-                  id="restaurantName"
+                  name="message"
+                  id="message"
                   required
                 />
               </div>
@@ -185,82 +159,57 @@
                 />
               </div>
             </div>
-            <div class="col-12 my-2">
-              <a
-                class="text-underline text-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                style="cursor:pointer"
-              >Select location</a>
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                <label for="latitude">Latitude</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="latitude"
-                  name="latitude"
-                  placeholder="latitude"
-                  required
-                  readonly
-                />
-              </div>
-            </div>
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                <label for="longitude">Longitude</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="longitude"
-                  name="longitude"
-                  placeholder="longitude"
-                  required
-                  readonly
-                />
-              </div>
-            </div>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="">Website
-            <span class="text-muted">(Optional)</span></label>
+          <label for="description" class="form-label">Description
+            <span class="text-muted">(anything related to your request)</span></label>
           <div class="input-group flex-nowrap">
             <span class="input-group-text" id="addon-wrapping">
-              <i class="fa-solid fa-globe"></i>
+              <i class="fa-solid fa-message"></i>
             </span>
-            <input
-              type="url"
+            <textarea
+              type="text"
               class="form-control"
-              name="website"
-              placeholder="https://www.example.com"
-            />
+              name="description"
+              id="description"
+              required
+            ></textarea>
           </div>
         </div>
 
+        <div class="mb-3">
+              <label for="budget" class="form-label">Budget</label>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                  <i class="fa-solid fa-dollar"></i>
+                </span>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="budget"
+                  id="budget"
+                  required
+                />
+              </div>
+            </div>
+
         <div class="d-grid gap-2">
-          <button class="btn btn-block btn-primary">Create Restaurant</button>
+          <button class="btn btn-block btn-primary">Create request</button>
         </div>
       </form>
     </div>
   </div>
-
+{{!-- 
   <div class="row my-5">
-    {{#if restaurants}}
-    <h4>SmartCycle Restaurants</h4>
-    {{/if}}
+    {{#if restaurants}} <h4>Your Requests</h4> {{/if}}
     {{#each restaurants}}
       <div class="col-md-4">
         <div class="card p-3 mb-3" style="min-height:220px">
           <p><b>Name: </b>{{this.title}}</p>
           <p><b>Phone: </b>{{this.phoneNumber}}</p>
-          <p><b>Food Type: </b>
-            {{#each this.foodTypes}}
-              {{this}},
-            {{/each}}
-          </p>
+          <p><b>Food Type: </b> {{this.foodType}} </p>
           <p><b>Address: </b>{{this.address.street}},
             {{this.address.city}},
             {{this.address.state}}
@@ -269,50 +218,9 @@
             <a href="/restaurants/details/{{this._id}}"><button
                 class="btn btn-primary"
               >View</button></a>
-              <a href="/restaurants/edit/{{this._id}}"><button
-                class="btn btn-primary"
-              >Edit</button></a>
           </div>
         </div>
       </div>
     {{/each}}
-  </div>
-</div>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select Location</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div id="selection-map" style="min-height:300px"></div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >Close</button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-        >Save Location</button>
-      </div>
-    </div>
-  </div>
+  </div> --}}
 </div>

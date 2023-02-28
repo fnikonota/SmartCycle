@@ -4,8 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 (function () {
-  let map;
+  let map, smartCycleRestaurants;
   const mapEL = document.getElementById("map");
+  const selectionMap = document.getElementById("selection-map");
+  const currentUrl = window.location.href;
+  const currentPath = currentUrl.split("/").pop();
+
+  if (currentPath === 'restaurants') {
+    const restaurantsData = document.getElementById("restaurants-data");
+    smartCycleRestaurants = JSON.parse(restaurantsData.getAttribute("data-src"));
+  }
+
+
   function initMap() {
     if (navigator.geolocation && mapEL) {
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -25,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
             location: currentLocation, // current location
             radius: 1000, // 1000 meters
             type: ["restaurant"],
-            fields: ['formatted_phone_number']
           },
           (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -36,6 +45,36 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
         );
+
+
+        if (smartCycleRestaurants.length) {
+          smartCycleRestaurants.forEach(restaurant => {
+            const marker = new google.maps.Marker({
+              position: restaurant.location,
+              map: map,
+              title: restaurant.title,
+              icon: {
+                url: 'https://cdn.iconscout.com/icon/premium/png-512-thumb/restaurant-66-233145.png?f=avif&w=256',
+                scaledSize: new google.maps.Size(30, 30)
+              }
+
+            });
+            marker.addListener("click", () => {
+              const infowindow = new google.maps.InfoWindow();
+              const content = `
+              <div id=${restaurant?._id} style="max-width:200px">
+                <h5>${restaurant?.title}</h5> 
+                <p style="margin-top:5px;" class="mb-0"><b>Contact:</b> ${restaurant?.phoneNumber} </p>
+                <p style="margin-top:5px;" class="mb-0"><b>Type:</b> ${restaurant?.foodTypes.join(', ')} </p>
+                <p style="margin-top:5px;" class="mb-0">${restaurant?.address?.street}, ${restaurant?.address?.state}, ${restaurant?.address?.city}, ${restaurant?.address?.zip}</p>
+              </div>
+              `;
+              infowindow.setContent(content);
+              infowindow.open(map, marker);
+            });
+          });
+        }
+
         // display the marker
         const displayMarker = (location) => {
           let marker;
@@ -52,6 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
             getFormattedPhoneNumber(location.place_id);
           });
         };
+        // unobserve
+
+      }, function (error) {
+        console.log('error: ', error);
+      }, {
+        enableHighAccuracy: true,
       });
     }
   }
@@ -92,7 +137,48 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // initialize the map
-  initMap();
+  if (mapEL) {
+    initMap();
+  }
+
+  if (selectionMap) {
+    console.log('selectionMap: ', selectionMap);
+    initializeSelectionMap();
+  }
+
+  function initializeSelectionMap() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const { latitude, longitude } = position.coords;
+        const currentLocation = { lat: latitude, lng: longitude };
+        map = new google.maps.Map(selectionMap, {
+          center: currentLocation,
+          zoom: 15
+        });
+
+        const marker = new google.maps.Marker({
+          position: currentLocation,
+          map: map,
+          title: "Your Location",
+        });
+
+        // add a maker on click
+        google.maps.event.addListener(map, 'click', function (event) {
+          placeMarker(event.latLng);
+        });
+        function placeMarker(location) {
+          marker.setPosition(location);
+          const latitude = location.lat();
+          const longitude = location.lng();
+          const lat = document.getElementById("latitude");
+          const lng = document.getElementById("longitude");
+          lat.value = latitude;
+          lng.value = longitude;
+
+        }
+      });
+    }
+  }
 
 
 })();

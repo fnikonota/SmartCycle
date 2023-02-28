@@ -19,6 +19,11 @@ const session = require("express-session");
 // https://www.npmjs.com/package/hbs
 const hbs = require("hbs");
 
+// Define the helper function
+hbs.registerHelper('isChecked', function(value, array) {
+    return array.includes(value) ? 'checked' : '';
+  });
+
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
@@ -45,6 +50,7 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 app.use("/auth", require("./routes/auth.routes"));
 app.use("/restaurants", require("./routes/restaurant.routes"));
+app.use("/shelters", require("./routes/shelter.routes"));
 // adding /location means every route in the location.routes file will automatically have /locaton prefixed to the endpoint.
 // Must setup all route locations below:
 // example - app.use("/auth", require("./routes/auth.routes"));
