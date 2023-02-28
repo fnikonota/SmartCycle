@@ -2,7 +2,8 @@ const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const restaurantSchema = new Schema(
-  {
+  { 
+    placeId: String,
     author: {type: Schema.Types.ObjectId, ref: "User"},
     title: String,
     address: {
@@ -17,7 +18,12 @@ const restaurantSchema = new Schema(
         type: [String],
         enum: ['Fancy', 'General', 'Fast', 'Take-Out']
     },
-    comments: [String]
+    comments: [String],
+    website: String,
+    location: {
+        lat: Number,
+        lng: Number
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    

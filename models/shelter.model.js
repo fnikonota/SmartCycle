@@ -4,15 +4,18 @@ const { Schema, model } = require("mongoose");
 const shelterSchema = new Schema(
   {
     author: {type: Schema.Types.ObjectId, ref: "User"},
-    title: String,
     address: {
         street: String,
         city: String,
         state: String,
         zip: Number
     },
+    message: String,
+    description: String,
     phoneNumber: String,
-    availableFood: String[]
+    foodTypes: [String],
+    availableFood: [String],
+    budget: Number,
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
